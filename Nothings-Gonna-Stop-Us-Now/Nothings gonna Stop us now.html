@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nothings gonna Stop us now</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        background-image: url(Pic.gif);
+      }
+
+      .frame {
+        background-color: #fff;
+        padding: 20px;
+        border: 2px solid #333;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        font-size: 36px;
+        text-align: center;
+        white-space: pre-wrap;
+        word-break: break-word;
+        opacity: 0;
+        animation: fade-in-out 4s linear forwards;
+        font-family: "Verdana", sans-serif;
+        color: #333;
+      }
+
+      @keyframes fade-in-out {
+        0% {
+          opacity: 0;
+        }
+        20% {
+          opacity: 1;
+        }
+        60% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame">
+      <h1 id="lyrics"></h1>
+      <img
+        src="https://media.tenor.com/2XJN2YEYbIAAAAAC/peach-and.gif"
+        alt="Animated GIF"
+        style="width: 200px; height: auto"
+      />
+    </div>
+    <audio id="audio" src="Song.mp3"></audio>
+    <script>
+      const lyricsElement = document.getElementById("lyrics");
+      const audioElement = document.getElementById("audio");
+
+      const lyrics = [
+        "",
+        "Looking in your eyes,",
+        "I see a paradise",
+        "This world that I found",
+        "Is too good to be true",
+        "Standin' here beside you",
+        "Want so much to give you",
+        "This love in my heart",
+        "That I'm feelin' for you",
+      ];
+
+      let currentLine = 0;
+
+      audioElement.addEventListener("loadedmetadata", function () {
+        audioElement.play();
+        startLyrics();
+      });
+
+      function startLyrics() {
+        const duration = audioElement.duration;
+        const lyricDuration = duration / lyrics.length;
+        const currentLineIndex = Math.floor(
+          audioElement.currentTime / lyricDuration
+        );
+        if (currentLineIndex !== currentLine) {
+          currentLine = currentLineIndex;
+          lyricsElement.textContent = lyrics[currentLineIndex];
+          lyricsElement.style.animationDelay =
+            currentLineIndex * lyricDuration + "s";
+        }
+        if (!audioElement.paused) {
+          requestAnimationFrame(startLyrics);
+        }
+      }
+    </script>
+  </body>
+</html>
